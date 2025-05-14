@@ -1,9 +1,24 @@
- const express = require('express');
-   const app = express();
-
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 const { getOrderSKU, refreshAccessToken, markOrderShipped, getOrderDetail } = require('./shopee');
+const { getCourseLink } = require('./googleSheet');
 
-// ...rest of your code...
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const TOKENS_PATH = path.join(__dirname, 'tokens.json');
+const redemptionLogs = [];
+
+function loadTokens() {
+  return JSON.parse(fs.readFileSync(TOKENS_PATH, 'utf-8'));
+}
+
+function saveTokens(tokens) {
+  fs.writeFileSync(TOKENS_PATH, JSON.stringify(tokens, null, 2), 'utf-8');
+}
 
 app.post('/api/redeem', async (req, res) => {
   const { orderNumber } = req.body;
@@ -85,4 +100,14 @@ app.post('/api/redeem', async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
+});
+
+// (Optional) Admin endpoint to view logs
+app.get('/api/admin/logs', (req, res) => {
+  res.json({ logs: redemptionLogs });
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT}`);
 });
