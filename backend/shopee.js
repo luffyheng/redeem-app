@@ -5,7 +5,7 @@ const path = require('path');
 
 // === CONFIG ===
 const PARTNER_ID = '2009397';
-const PARTNER_KEY = '545777637371464f6a4d476d72636656585749486a566c5763626f76624e6459';
+const PARTNER_KEY = '6d564b47726d75796b58416d45654854637a77525876695557775a624c644563';
 const SHOP_ID = '339683430';
 const TOKENS_PATH = path.join(__dirname, 'tokens.json');
 
