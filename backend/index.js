@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const { getOrderSKU, markOrderShipped, getOrderDetail } = require('./shopee');
 const { getCourseLink } = require('./googleSheet');
-console.log("Auto-deploy test at", new Date());
 
 const app = express();
 app.use(cors());
