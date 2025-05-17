@@ -14,11 +14,20 @@ function App() {
     setResult(null);
 
     try {
-      const response = await fetch('${apiUrl}/api/redeem', {
+      const response = await fetch(`${apiUrl}/api/redeem`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderNumber }),
       });
+
+      // Handle non-200 responses gracefully
+      if (!response.ok) {
+        const errorData = await response.json();
+        setResult({ success: false, message: errorData.message || 'Server error.' });
+        setLoading(false);
+        return;
+      }
+
       const data = await response.json();
       setResult(data);
     } catch (error) {
