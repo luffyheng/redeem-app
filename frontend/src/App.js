@@ -173,7 +173,24 @@ function App() {
           </div>
         )}
 
-        {/* --- Advertising Banner Start --- */}
+
+
+        <div style={{
+          marginTop: 40,
+          textAlign: 'center',
+          color: '#64748b',
+          fontSize: 14,
+          letterSpacing: '0.2px'
+        }}>
+          <span style={{
+            color: '#6366f1',
+            fontWeight: 800,
+            fontSize: 15,
+            letterSpacing: '0.5px'
+          }}>EducationHub</span> &mdash; Excellence in Learning
+        </div>
+
+                  {/* --- Advertising Banner Start --- */}
         <div style={{
           margin: '36px 0 0 0',
           padding: '16px 20px',
@@ -210,20 +227,7 @@ function App() {
         </div>
         {/* --- Advertising Banner End --- */}
 
-        <div style={{
-          marginTop: 40,
-          textAlign: 'center',
-          color: '#64748b',
-          fontSize: 14,
-          letterSpacing: '0.2px'
-        }}>
-          <span style={{
-            color: '#6366f1',
-            fontWeight: 800,
-            fontSize: 15,
-            letterSpacing: '0.5px'
-          }}>EducationHub</span> &mdash; Excellence in Learning
-        </div>
+          
       </div>
     </div>
   );
