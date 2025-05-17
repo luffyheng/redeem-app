@@ -19,7 +19,9 @@ app.post('/api/redeem', async (req, res) => {
   try {
     orderDetail = await getOrderDetail(orderNumber); // No access token needed
   } catch (err) {
-    return res.status(500).json({ success: false, message: err.message });
+    // Use err.status if available, otherwise default to 500
+    const status = err.status || 500;
+    return res.status(status).json({ success: false, message: err.message });
   }
 
   try {
@@ -63,7 +65,8 @@ app.post('/api/redeem', async (req, res) => {
       res.json({ success: false, message: 'No courses found for these SKUs.' });
     }
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    const status = err.status || 500;
+    res.status(status).json({ success: false, message: err.message });
   }
 });
 
