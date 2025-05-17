@@ -55,7 +55,7 @@ app.post('/api/redeem', async (req, res) => {
         }
       } else {
         shipStatus = 'not_ready';
-        shipWarning = Order status is "${orderDetail.order_status}". Cannot mark as shipped.;
+        shipWarning = `Order status is "${orderDetail.order_status}". Cannot mark as shipped.`;
       }
 
       res.json({ success: true, courses, shipStatus, shipWarning });
@@ -74,5 +74,5 @@ app.get('/api/admin/logs', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(Backend running on port ${PORT});
+  console.log(`Backend running on port ${PORT}`);
 });
