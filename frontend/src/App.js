@@ -172,6 +172,44 @@ function App() {
             )}
           </div>
         )}
+
+        {/* --- Advertising Banner Start --- */}
+        <div style={{
+          margin: '36px 0 0 0',
+          padding: '16px 20px',
+          background: 'linear-gradient(90deg, #f9fafb 0%, #e0e7ef 100%)',
+          borderRadius: 12,
+          border: '1.5px solid #6366f1',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontSize: 15,
+          fontWeight: 500,
+          color: '#1e293b',
+          boxShadow: '0 1px 8px 0 rgba(99,102,241,0.06)'
+        }}>
+          <span>
+            Build by <span style={{fontWeight: 700, color: '#6366f1'}}>Luffy</span> &mdash; Contact: <a href="tel:0172020358" style={{color: '#0ea5e9', textDecoration: 'underline'}}>0172020358</a>
+          </span>
+          <a href="https://wa.link/wmpiyo" target="_blank" rel="noopener noreferrer">
+            <button style={{
+              background: '#25d366',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              padding: '8px 18px',
+              fontWeight: 700,
+              fontSize: 15,
+              cursor: 'pointer',
+              boxShadow: '0 1px 4px 0 rgba(37,211,102,0.13)',
+              marginLeft: 16
+            }}>
+              Press me
+            </button>
+          </a>
+        </div>
+        {/* --- Advertising Banner End --- */}
+
         <div style={{
           marginTop: 40,
           textAlign: 'center',
