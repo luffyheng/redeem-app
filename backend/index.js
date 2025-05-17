@@ -1,6 +1,13 @@
-const { getOrderSKU, refreshAccessToken, markOrderShipped, getOrderDetail } = require('./shopee');
+const express = require('express');
+const cors = require('cors');
+const { getOrderSKU, markOrderShipped, getOrderDetail } = require('./shopee');
+const { getCourseLink } = require('./googleSheet');
 
-// ...rest of your code...
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const redemptionLogs = [];
 
 app.post('/api/redeem', async (req, res) => {
   const { orderNumber } = req.body;
@@ -8,35 +15,11 @@ app.post('/api/redeem', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Order number is required.' });
   }
 
-  let tokens = loadTokens();
   let orderDetail;
-  let triedRefresh = false;
-
-  while (true) {
-    try {
-      orderDetail = await getOrderDetail(orderNumber, tokens.access_token);
-      break; // Success!
-    } catch (err) {
-      if (
-        !triedRefresh &&
-        err.message &&
-        (
-          err.message.toLowerCase().includes('invalid access_token') ||
-          err.message.toLowerCase().includes('invalid_acceess_token')
-        )
-      ) {
-        triedRefresh = true;
-        try {
-          const newTokens = await refreshAccessToken(tokens.refresh_token);
-          tokens = { ...tokens, ...newTokens };
-          saveTokens(tokens);
-          continue; // Retry with new token
-        } catch (refreshErr) {
-          return res.status(500).json({ success: false, message: 'Failed to refresh access token.' });
-        }
-      }
-      return res.status(500).json({ success: false, message: err.message });
-    }
+  try {
+    orderDetail = await getOrderDetail(orderNumber); // No access token needed
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
   }
 
   try {
@@ -63,7 +46,7 @@ app.post('/api/redeem', async (req, res) => {
       // Only try to mark as shipped if status is READY_TO_SHIP
       if (orderDetail.order_status === 'READY_TO_SHIP') {
         try {
-          await markOrderShipped(orderNumber, tokens.access_token);
+          await markOrderShipped(orderNumber); // No access token needed
           shipStatus = 'shipped';
         } catch (shipErr) {
           shipWarning = shipErr.message;
@@ -72,7 +55,7 @@ app.post('/api/redeem', async (req, res) => {
         }
       } else {
         shipStatus = 'not_ready';
-        shipWarning = `Order status is "${orderDetail.order_status}". Cannot mark as shipped.`;
+        shipWarning = Order status is "${orderDetail.order_status}". Cannot mark as shipped.;
       }
 
       res.json({ success: true, courses, shipStatus, shipWarning });
@@ -82,4 +65,14 @@ app.post('/api/redeem', async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
+});
+
+// (Optional) Admin endpoint to view logs
+app.get('/api/admin/logs', (req, res) => {
+  res.json({ logs: redemptionLogs });
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(Backend running on port ${PORT});
 });
