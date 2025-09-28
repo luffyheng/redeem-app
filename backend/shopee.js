@@ -102,7 +102,7 @@ async function getOrderDetail(orderNumber) {
 async function getOrderSKU(orderNumber) {
   const order = await getOrderDetail(orderNumber);
   if (!order.item_list) throw new Error('No item_list in order');
-  return order.item_list.map(item => item.item_sku);
+  return order.item_list.map(item => item.model_sku || item.item_sku);
 }
 
 async function markOrderShipped(orderNumber) {

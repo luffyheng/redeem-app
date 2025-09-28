@@ -25,7 +25,7 @@ app.post('/api/redeem', async (req, res) => {
   }
 
   try {
-    const skus = orderDetail.item_list.map(item => item.item_sku);
+    const skus = orderDetail.item_list.map(item => item.model_sku || item.item_sku);
     const courses = [];
     for (const sku of skus) {
       const course = await getCourseLink(sku);
