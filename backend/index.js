@@ -24,6 +24,15 @@ app.post('/api/redeem', async (req, res) => {
     return res.status(status).json({ success: false, message: err.message });
   }
 
+  // Check if order is eligible for redemption
+  const validStatuses = ['READY_TO_SHIP', 'SHIPPED', 'COMPLETED'];
+  if (!validStatuses.includes(orderDetail.order_status)) {
+    return res.status(400).json({ 
+      success: false, 
+      message: `Cannot redeem. Order status is "${orderDetail.order_status}". Only paid and valid orders can be redeemed.` 
+    });
+  }
+
   try {
     const skus = orderDetail.item_list.map(item => item.model_sku || item.item_sku);
     const courses = [];
